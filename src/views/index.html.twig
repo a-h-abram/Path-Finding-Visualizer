@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="" style="width: 100%;height: 100%;">
+<head>
+    <title>{% block title %}Path Finding Algorithms - ABRAM{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.4/css/mdb.min.css" rel="stylesheet">
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.4/js/mdb.min.js"></script>
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    {% block head %}
+    {% endblock %}
+</head>
+<body style="height: 100%;width: 100%;background: #3e3e3e;">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to left, #2f2d41, #0d0d12);">
+        <a class="navbar-brand" href="/" style="font-weight: 700;">Path Finding ABRAM</a>
+
+        <div class="collapse navbar-collapse" id="navbar-commands">
+            <ul class="navbar-nav mr-auto">
+                <!--<li class="nav-item">
+                    <button class="nav-link btn btn-outline-success" onclick="updateArrayValues()">Générer un nouveau tableau</button>
+                </li>-->
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navChooseAlgo" data-toggle="dropdown">
+                        Choose Path Finding Algorithm
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navChooseAlgo">
+                        <a id="algorithm-0" class="dropdown-item active" href="#" onclick="changeAlgorithm(0)">A Star (A*)</a>
+                        <a id="algorithm-1" class="dropdown-item" href="#" onclick="changeAlgorithm(1)">Dijkstra</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navChooseSelection" data-toggle="dropdown">
+                        Selection
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navChooseSelection">
+                        <a id="node-selection-0" class="dropdown-item" href="#" onclick="changeSelection(0)">
+                            Define Start Point
+                        </a>
+                        <a id="node-selection-1" class="dropdown-item" href="#" onclick="changeSelection(1)">
+                            Define End Point
+                        </a>
+                        <a id="node-selection-2" class="dropdown-item" href="#" onclick="changeSelection(2)">
+                            Define Uber Point
+                        </a>
+                        <a id="node-selection-3" class="dropdown-item active" href="#" onclick="changeSelection(3)">
+                            Define Walls
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="generateMaze()">Generate Auto Maze</a>
+                </li>
+
+                <!--<li id="sort-8" class="nav-item">
+                    <a class="nav-link" href="#" onclick="changeSortType(8)">Radix Sort</a>
+                </li>-->
+
+            </ul>
+        </div>
+    </nav>
+</header>
+{% block content %}
+{% endblock %}
+</body>
+
+{% block javascripts %}
+<script type="application/javascript">
+    AOS.init();
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .navbar {
+        background: linear-gradient(270deg, #975c9f, #e76e74) !important;
+        background-size: 400% 400%;
+        -webkit-animation: Background-Animated 4s ease infinite;
+        -moz-animation: Background-Animated 4s ease infinite;
+        animation: Background-Animated 44s ease infinite;
+    }
+
+    body {
+        background: linear-gradient(270deg, #494e67, #eaa289) !important;
+        background-size: 400% 400%;
+        -webkit-animation: Background-Animated 4s ease infinite;
+        -moz-animation: Background-Animated 4s ease infinite;
+        animation: Background-Animated 44s ease infinite;
+    }
+
+    @-webkit-keyframes Background-Animated {
+        0% {
+            background-position:0% 50%;
+        }
+
+        50% {
+            background-position:100% 50%
+        }
+
+        100% {
+            background-position:0% 50%
+        }
+    }
+    @-moz-keyframes Background-Animated {
+        0% {
+            background-position: 0 50%;
+        }
+
+        50% {
+            background-position:100% 50%
+        }
+
+        100% {
+            background-position: 0 50%
+        }
+    }
+    @keyframes Background-Animated {
+        0% {
+            background-position: 0 50%;
+        }
+
+        50% {
+            background-position: 100% 50%
+        }
+
+        100% {
+            background-position: 0 50%
+        }
+    }
+</style>
+{% endblock %}
+</html>

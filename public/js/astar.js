@@ -35,11 +35,15 @@ let astar = async (graph, node, endNodes, uberNodes) => {
         }
 
         if (currentNode.x === endNode.x && currentNode.y === endNode.y) {
-            /*if (searchUber) {
+
+            if (searchUber) {
                 searchUber = (uberNodes.length > 0);
+
                 if (searchUber) {
-                    node = endNode;
-                    closedList.push(currentNode);
+                    node = currentNode;
+                    closedList = [];
+                    //closedList.push(currentNode);
+                    openList = [];
                     openList.push(currentNode);
                 }
 
@@ -49,11 +53,12 @@ let astar = async (graph, node, endNodes, uberNodes) => {
 
 
                 continue;
-            }*/
+            } else {
 
-            console.log("A* has found a path");
+                console.log("A* has found a path");
 
-            return displayFinalPath(await reconstructPath(currentNode));
+                return displayFinalPath(await reconstructPath(currentNode));
+            }
         }
 
         closedList.push(currentNode);
@@ -119,7 +124,6 @@ let getDistance = (node1, node2) => {
  * @returns {Promise<void>}
  */
 let getClosestEndNode = async (startNode, endNodes) => {
-    console.log("get end node");
     let minDistance = Number.MAX_SAFE_INTEGER;
     let closestNode;
 

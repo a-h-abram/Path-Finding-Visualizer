@@ -2,10 +2,10 @@
  * Implementation of Djikstra algorithm
  * @param graph
  * @param startNode
- * @param uberNodes
+ * @param searchUber
  * @returns {Promise<void>}
  */
-let djikstra = async(graph, startNode, uberNodes) => {
+let djikstra = async(graph, startNode, searchUber) => {
     await setupGraphForDjikstra(graph, startNode);
 
     let queue = [];
@@ -20,10 +20,10 @@ let djikstra = async(graph, startNode, uberNodes) => {
 
         queue.push(currentNode);
 
-        if (currentNode.state === nodeState.End) {
+        if (!searchUber && currentNode.state === nodeState.End || searchUber && currentNode.state === nodeState.Uber) {
             console.log("Djikstra has found a path");
 
-            return displayFinalPath(await reconstructPath(currentNode));
+            return reconstructPath(currentNode);
         }
 
         for (let i = 0 ; i < currentNode.neighbours.length ; i++) {
@@ -41,7 +41,8 @@ let djikstra = async(graph, startNode, uberNodes) => {
                 neighbour.visited = false;
                 queue.push(neighbour);
 
-                if (neighbour.state !== nodeState.End) {
+                if (neighbour.state !== nodeState.Start && neighbour.state !== nodeState.Uber
+                    && neighbour.state !== nodeState.End) {
                     await showSearchNodes(neighbour);
                 }
             }

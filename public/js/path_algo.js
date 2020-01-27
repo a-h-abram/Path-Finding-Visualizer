@@ -2,7 +2,6 @@
  * We setup everything here (methods, ...)
  */
 
-let pathAlgoType = 0; // A* is the default path finding algorithm
 let isFinding = false; // state to avoid multiple sort process at the time
 let pathAlreadyFound = false;
 let isStartNode = false;
@@ -17,11 +16,6 @@ let algoHasBeenLaunched = false;
  * Selection variables
  */
 let isMouseDown = false;
-let hoverRepeater;
-
-let selectionWall = true; // 0
-let selectionStart = false;
-let selectionEnd = false;
 
 let nodeSelection = {
     0: false, // start points
@@ -50,12 +44,12 @@ let generateNewGraph = async () => {
     const width = Math.round($(".graph-nodes").width() / 33);
     const height = Math.round($(".graph-nodes").height() / 33);
 
+    isMazeGenerated = false;
     isStartNode = false;
     isEndNode = false;
     startNodes = [];
     endNodes = [];
-
-    console.log("New Graph: width = " + width + " & height = " + height);
+    uberNodes = [];
 
     graph = new Graph(width, height, false, false);
 
@@ -78,14 +72,6 @@ let resetGraph = async () => {
 };
 
 let nodeSelected = (x, y, mouseDown = false, mouseUp = false) => {
-    console.log("node selected");
-
-    if (mouseUp) {
-        console.log(mouseDown);
-        console.log(isMouseDown);
-        console.log(mouseUp);
-    }
-
     if ((!mouseDown && !isMouseDown) || isMazeGenerated || isFinding) {
         return;
     }
@@ -103,7 +89,6 @@ let nodeSelected = (x, y, mouseDown = false, mouseUp = false) => {
         $(nodeId).addClass("node-wall");
 
         if (algoHasBeenLaunched && mouseUp) {
-            console.log("launch algo again");
             launchPathFinding();
         }
     } else if (nodeSelection[0] && !isStartNode && $(nodeId).hasClass("node-start") === false) {
@@ -151,8 +136,6 @@ let handleChangeSelection = (id) => {
 
     lastNodeSelection = id;
 
-    console.log("nodeSelection = " + id);
-
     $('#node-selection-' + id).addClass("active");
 };
 
@@ -185,8 +168,6 @@ let handleAlgorithmSelected = (id) => {
 
     lastAlgoSelected = id;
 
-    console.log("Algo Selected = " + id);
-
     $('#algorithm-' + id).addClass("active");
 };
 
@@ -198,9 +179,11 @@ let changeAlgorithm = (id) => {
     switch (id) {
         case 0: // start point
             handleAlgorithmSelected(id);
+            $('#node-selection-2').removeClass('disabled');
             break;
         case 1: // end point
             handleAlgorithmSelected(id);
+            $('#node-selection-2').addClass('disabled');
             break;
     }
 };
@@ -211,28 +194,52 @@ let launchPathFinding = async () => {
     }
 
     if (!isStartNode || !isEndNode) {
-        console.log("No start and/or end node");
+        console.log("There is no start and/or end node (required)");
         return;
     }
 
     isFinding = true;
 
+    let finalPath = [];
+    let startNode = startNodes[0];
+
+    if (lastAlgoSelected !== 1 && uberNodes && uberNodes.length > 0) { // searching in first the uber nodes if they exist
+        for (let i = 0 ; i < uberNodes.length ; i++) {
+            switch (lastAlgoSelected) {
+                case 0:
+                    finalPath.push(...await astar(graph, startNode, endNodes, uberNodes[i]));
+                    break;
+                case 1:
+                    finalPath.push(...await djikstra(graph, startNode, true));
+                    break;
+                default:
+                    finalPath.push(...await astar(graph, startNode, endNodes, uberNodes[i]));
+                    break;
+            }
+
+            await graph.resetGraphData();
+
+            startNode = uberNodes[i];
+        }
+    }
+
+    // then searching the path to the end nodes
     switch (lastAlgoSelected) {
         case 0:
-            await astar(graph, startNodes[0], endNodes, uberNodes);
+            finalPath.push(...await astar(graph, startNode, endNodes, null));
             break;
         case 1:
-            await djikstra(graph, startNodes[0], uberNodes);
+            finalPath.push(...await djikstra(graph, startNode, false));
             break;
         default:
-            await astar(graph, startNodes[0], endNodes, uberNodes);
+            finalPath.push(...await astar(graph, startNode, endNodes, null));
             break;
     }
 
+    await displayFinalPath(finalPath);
+
     algoHasBeenLaunched = true;
-
     pathAlreadyFound = true;
-
     isFinding = false;
 };
 
@@ -243,7 +250,7 @@ let launchPathFinding = async () => {
  */
 
 /**
- * The algorithm used to generate a maze is
+ * The algorithm used to generate a maze is the recursive backtracking
  * @returns {Promise<void>}
  */
 let generateMaze = async() => {
@@ -302,7 +309,7 @@ let recursiveBacktracker = async() => {
         currentNode.visited = true;
 
         if (currentNode.state === nodeState.Blank) {
-            $('#node-' + currentNode.x + '-' + currentNode.y).css('background-color', 'blue');
+            $('#node-' + currentNode.x + '-' + currentNode.y).addClass('node-maze-animated');
         }
 
 
@@ -415,10 +422,23 @@ let setEndPoint = async(node) => {
 };
 
 let clearMazeColor = async() => {
+    let delay = 0;
+
     for (let y = 0 ; y < graph.height ; y++) {
         for (let x = 0 ; x < graph.width ; x++) {
             if (graph.nodes[y][x].state === nodeState.Blank) {
-                $('#node-' + x + "-" + y).css("background-color", "white");
+                setTimeout(function() {
+                    $('#node-' + x + "-" + y).addClass('node-maze-finished-animated');
+
+                    setTimeout(function() {
+                        $('#node-' + x + "-" + y).removeClass('node-maze-finished-animated');
+                        $('#node-' + x + "-" + y).removeClass('node-maze-animated');
+                    }, 700);
+
+
+                }, delay);
+
+                delay += 5;
             }
         }
     }

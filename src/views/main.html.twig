@@ -2,399 +2,544 @@
 
 {% block content %}
 
-<section class="section-graph">
+    <section class="section-graph">
 
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute;display: none;">
-        <div class="toast-header">
-            <strong class="mr-auto" id="toast-title">Test</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        <div class="graph-nodes">
         </div>
-        <div class="toast-body" id="toast-content">
-            Test Message
-        </div>
-    </div>
 
-    <div class="graph-nodes">
-    </div>
+        <div class="commands-parameters">
+            <div class="container">
+                <button class="btn btn-pfa path-finding-launch" data-aos="fade-up" data-aos-duration="400"
+                        type="submit" onclick="launchPathFinding()">
+                    Launch Search
+                </button>
 
-    <div class="commands-parameters">
-        <div class="container">
-            <button class="btn btn-outline-primary path-finding-launch" data-aos="fade-up" data-aos-duration="700"
-                    type="submit" onclick="launchPathFinding()">
-                Launch Search
-            </button>
-            <button class="btn btn-outline-secondary btn-path-reset" data-aos="fade-up" data-aos-duration="700"
-                    type="submit" onclick="resetGraph()">
-                Reset Graph
-            </button>
-        </div>
-    </div>
-
-</section>
-
-<section class="section-footer" data-aos="fade-up">
-    <div class="pfa-container">
-        <div class="row">
-            <div class="col" style="text-align: center;">
-                <span>Path Finding Algorithms<br>All Rights Reserved</span>
-            </div>
-            <div class="col">
-                <span>Developed by <strong>Anas Habib ABRAM</strong></span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="modal fade" id="modal-info" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="display: flex;align-items: center;justify-content: center;">
-                <h3 class="modal-title">Informations</h3>
-                <button style="position: absolute;top: 1em;right: 1em;padding: 0;" type="button" class="close"
-                        data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button class="btn btn-pfa-inversed btn-path-reset" data-aos="fade-up" data-aos-duration="400"
+                        type="submit" onclick="resetGraph()">
+                    Reset Graph
                 </button>
             </div>
-            <div class="modal-body" style="text-align: center;">
-                <h5 style="font-weight: bold;">
-                    Ne confondez pas la vitesse de traitement des algorithmes et le temps d'affichage
-                </h5>
+        </div>
 
-                <br>
+    </section>
 
-                <p>
-                    <strong>
-                        L'affichage des algorithmes peuvent prendre plus de temps qu'il ne le sont en réalité
-                    </strong>
+    <section class="section-footer" data-aos="fade-up">
+        <div class="pfa-container">
+            <div class="row">
+                <div class="col" style="text-align: center;">
+                    <span>Path Finding Algorithms<br>THUAS Project - AI (Platinium Achievement)</span>
+                </div>
+                <div class="col">
+                    <span>Developed by <strong>Anas Habib ABRAM</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="pfa-modal-info" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background: linear-gradient(to top left, #2f2d41, #0d0d12);color: white;">
+                <div class="modal-header" style="display: flex;align-items: center;justify-content: center;">
+                    <h3 class="modal-title">Information</h3>
+                    <button style="position: absolute;top: 1em;right: 1em;padding: 0;color: white;" type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <h5 style="font-weight: bold;">
+                        Here is the meaning of each cells color:
+                    </h5>
+
                     <br>
-                    <span>
-                        Le graphique a été codé "from scratch" en utilisant seulement les canvas d'HTML5 et a été conçu
-                        en une trentaine de minute. L'affichage des données et l'actualisation de ces derniers sont
-                        donc loin d'être performants, ce qui influe grandement sur la "vitesse d'affichage du
-                        traitement des algorithmes". Fondez vous sur les pop-up affiché à chaque choix d'algorithme
-                        qui indiquera leur complexité (dans le pire des cas).
-                    </span>
-                </p>
-            </div>
-            <div class="modal-footer" style="display: flex;align-items: center;justify-content: center;">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-weight: bold;">
-                    C'est OK <i style="margin-left: .5em;" class="fa fa-thumbs-up"></i>
-                </button>
+
+                    <div class="container">
+                        <div class="modal-color-code">
+                            <div class="node node-start"></div>
+                            <label>Start Point (Unique)</label>
+                            <p style="font-size: .9em;margin: 0 3em;">
+                                The Path Finding algorithm will start from this unique point
+                            </p>
+                        </div>
+                        <div class="modal-color-code">
+                            <div class="node node-end"></div>
+                            <label>End Point</label>
+                            <p style="font-size: .9em;margin: 0 3em;">
+                                The Path Finding algorithm will try to reach one of these points
+                            </p>
+                        </div>
+                        <div class="modal-color-code">
+                            <div class="node node-uber"></div>
+                            <label>Uber Point</label>
+                            <p style="font-size: .9em;margin: 0 3em;">
+                                The Path Finding algorithm will try to reach one of these points before reaching one
+                                of the end point, which is similar to Uber Pool system
+                            </p>
+                        </div>
+                        <div class="modal-color-code">
+                            <div class="node node-wall"></div>
+                            <label>Walls</label>
+                            <p style="font-size: .9em;margin: 0 3em;">
+                                The Path Finding algorithm will avoid these obstacles to find his path
+                            </p>
+                        </div>
+                        <div class="modal-color-code">
+                            <div class="node node-visited-animated"></div>
+                            <label>Cells visited by the path finding algorithm</label>
+                            <p style="font-size: .9em;margin: 0 3em;">
+                                Shows which cells the path finding algorithm visited
+                            </p>
+                        </div>
+                        <div class="modal-color-code">
+                            <div class="node node-path-animated"></div>
+                            <label>Final path found</label>
+                            <p style="font-size: .9em;margin: 0 3em;">
+                                Shows the final path found by the path finding algorithm
+                            </p>
+                        </div>
+                    </div>
+                    <hr style="border-color: grey;width: 80%;">
+                    <div class="container">
+                        <p>
+                            <strong>Nota Bene:</strong> You can found the form of the path is weird and it is normal.
+                            The algorithm can not go in diagonal so the shape of the final path or even,
+                            the search path is kind of strange, it is particularly the case with A*.
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex;align-items: center;justify-content: center;">
+                    <button type="button" class="btn btn-pfa-modal" data-dismiss="modal" style="font-weight: bold;">
+                        It's OK <i style="margin-left: .5em;" class="fa fa-thumbs-up"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
 
 {% block stylesheets %}
-<style>
-    .graph-nodes {
-        width: 1200px;
-        height: 620px;
-        margin: 1.5em auto;
-    }
-
-    .node {
-        width: 33px;
-        height: 33px;
-        /*border: 1px solid #000000;*/
-    }
-
-    .node-blank {
-        background-color: #ffffff;
-    }
-
-    .node-start {
-        /*background-color: green !important;*/
-        animation: animated-node-start 200ms linear forwards;
-        -webkit-animation: animated-node-start 200ms linear forwards;
-    }
-
-    .node-end {
-        /*background-color: red !important;*/
-        animation: animated-node-end 200ms linear forwards;
-        -webkit-animation: animated-node-end 200ms linear forwards;
-    }
-
-    .node-path {
-        background-color: #feff8e !important;
-    }
-
-    .node-path-animated {
-        /*background-color: yellow !important;*/
-        animation: animated-node-path .7s linear forwards;
-        -webkit-animation: animated-node-path .7s linear forwards;
-    }
-
-    .node-wall {
-        /*background-color: #000000 !important;*/
-        animation: animated-node-wall 200ms linear forwards;
-        -webkit-animation: animated-node-wall 200ms linear forwards;
-    }
-
-    .node-uber {
-        /*background-color: purple !important;*/
-        animation: animated-node-uber 200ms linear forwards;
-        -webkit-animation: animated-node-uber 200ms linear forwards;
-    }
-
-    .node-visited {
-        background-color: #eaa289;
-    }
-
-    .node-visited-animated {
-        animation: animated-node-visited .3s linear forwards;
-        -webkit-animation: animated-node-visited .3s linear forwards;
-    }
-
-    @keyframes animated-node-wall {
-        0% {
-            border-radius: 50%;
-            background-color: #304451;
-            transform: scale(0);
-            -webkit-transform: scale(0);
+    <style>
+        .graph-nodes {
+            width: 1200px;
+            height: 620px;
+            margin: 1.5em auto;
         }
 
-        40% {
-            background-color: #1f3a4a;
+        .node {
+            width: 33px;
+            height: 33px;
         }
 
-        60% {
-            background-color: #2f2d41;
-            transform: scale(1.2);
-            -webkit-transform: scale(1.2);
+        .node-blank {
+            background-color: #ffffff;
         }
 
-        100% {
-            background-color: #222130;
-            border-radius: 0;
-            transform: scale(1);
-            -webkit-transform: scale(1);
-        }
-    }
-
-    @keyframes animated-node-start {
-        0% {
-            border-radius: 50%;
-            transform: scale(0);
-            -webkit-transform: scale(0);
+        .node-start {
+            animation: animated-node-start 200ms linear forwards !important;
+            -webkit-animation: animated-node-start 200ms linear forwards !important;
         }
 
-        30% {
-            background-color: lightgreen;
+        .node-end {
+            animation: animated-node-end 200ms linear forwards !important;
+            -webkit-animation: animated-node-end 200ms linear forwards !important;
         }
 
-        60% {
-            transform: scale(1.2);
-            -webkit-transform: scale(1.2);
+        .node-path {
+            background-color: #feff8e !important;
         }
 
-        100% {
-            background-color: green;
-            border-radius: 0;
-            transform: scale(1);
-            -webkit-transform: scale(1);
-        }
-    }
-
-    @keyframes animated-node-end {
-        0% {
-            border-radius: 50%;
-            background-color: #ffa9a9;
-            transform: scale(0);
-            -webkit-transform: scale(0);
+        .node-path-animated {
+            /*background-color: yellow !important;*/
+            animation: animated-node-path .7s linear forwards;
+            -webkit-animation: animated-node-path .7s linear forwards;
         }
 
-        30% {
-            background-color: #f97979;
+        .node-wall {
+            animation: animated-node-wall 200ms linear forwards;
+            -webkit-animation: animated-node-wall 200ms linear forwards;
         }
 
-        60% {
-            background-color: #ff5a5a;
-            transform: scale(1.2);
-            -webkit-transform: scale(1.2);
+        .node-uber {
+            animation: animated-node-uber 200ms linear forwards;
+            -webkit-animation: animated-node-uber 200ms linear forwards;
         }
 
-        100% {
-            background-color: #ff4949;
-            border-radius: 0;
-            transform: scale(1);
-            -webkit-transform: scale(1);
-        }
-    }
-
-    @keyframes animated-node-uber {
-        0% {
-            border-radius: 50%;
-            transform: scale(0);
-            -webkit-transform: scale(0);
-        }
-
-        5% {
+        .node-visited {
             background-color: #eaa289;
         }
 
-        40% {
-            background-color: #c78989;
+        .node-visited-animated {
+            animation: animated-node-visited .3s linear forwards;
+            -webkit-animation: animated-node-visited .3s linear forwards;
         }
 
-        60% {
-            background-color: #9a6f8b;
-            transform: scale(1.2);
-            -webkit-transform: scale(1.2);
+        .node-maze-animated {
+            animation: animated-node-maze .7s linear forwards;
+            -webkit-animation: animated-node-maze .7s linear forwards;
         }
 
-        100% {
-            background-color: #976393;
-            border-radius: 0;
-            transform: scale(1);
-            -webkit-transform: scale(1);
+        .node-maze-finished-animated {
+            animation: animated-node-maze-finished .7s linear forwards;
+            -webkit-animation: animated-node-maze-finished .7s linear forwards;
         }
-    }
-    
-    @keyframes animated-node-visited {
-        0% {
-            background-color: #494e67;
+
+        @keyframes animated-node-wall {
+            0% {
+                border-radius: 50%;
+                background-color: #304451;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            40% {
+                background-color: #1f3a4a;
+            }
+
+            60% {
+                background-color: #2f2d41;
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+            }
+
+            100% {
+                background-color: #222130;
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @keyframes animated-node-start {
+            0% {
+                border-radius: 50%;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            30% {
+                background-color: lightgreen;
+            }
+
+            60% {
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+            }
+
+            100% {
+                background-color: green;
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @keyframes animated-node-end {
+            0% {
+                border-radius: 50%;
+                background-color: #ffa9a9;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            30% {
+                background-color: #f97979;
+            }
+
+            60% {
+                background-color: #ff5a5a;
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+            }
+
+            100% {
+                background-color: #ff4949;
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @keyframes animated-node-uber {
+            0% {
+                border-radius: 50%;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            5% {
+                background-color: #eaa289;
+            }
+
+            40% {
+                background-color: #c78989;
+            }
+
+            60% {
+                background-color: #9a6f8b;
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+            }
+
+            100% {
+                background-color: #976393;
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @keyframes animated-node-visited {
+            0% {
+                background-color: #494e67;
+                border-radius: 50%;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            20% {
+                background-color: #6e5d85;
+            }
+
+            40% {
+                background-color: #9a6f8b;
+            }
+
+            60% {
+                background-color: #c78989;
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+            }
+
+            100% {
+                background-color: #eaa289;
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @keyframes animated-node-path {
+            0% {
+                background-color: #eaa289;
+                border-radius: 50%;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            60% {
+                background-color: #ff9b83;
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+            }
+
+            100% {
+                background-color: #feff8e;
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @keyframes animated-node-maze {
+            0% {
+                border-radius: 50%;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            5% {
+                background-color: lightblue;
+            }
+
+            40% {
+                background-color: #6b90a7;
+            }
+
+            60% {
+                background-color: #627992;
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+            }
+
+            100% {
+                background-color: #5a6478;
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @keyframes animated-node-maze-finished {
+            0% {
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+                background-color: #5a6478 !important;
+            }
+
+            15% {
+                background-color: #627992;
+            }
+
+            40% {
+                background-color: #6b90a7;
+                border-radius: 50%;
+                transform: scale(0);
+                -webkit-transform: scale(0);
+            }
+
+            60% {
+                background-color: lightblue;
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+            }
+
+            100% {
+                background-color: white;
+                border-radius: 0;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+            }
+        }
+
+        .section-graph {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+        }
+
+        .commands-parameters {
+            margin-top: 1.5em;
+            text-align: center;
+        }
+
+        .commands-single-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: .5em;
+        }
+
+        .pfa-choose-algo {
             border-radius: 50%;
-            transform: scale(0);
-            -webkit-transform: scale(0);
+            font-size: 8em;
+            background: linear-gradient(to top right, #1e9adf, #a6c);
         }
 
-        20% {
-            background-color: #6e5d85;
+        .pfa-choose-algo:hover {
+            background: linear-gradient(to bottom right, #1a1a1a, #525252);
         }
 
-        40% {
-            background-color: #9a6f8b;
+        .path-finding-launch {
+            min-width: 12.3em;
+            height: 5em;
+            font-size: 1em;
+            font-weight: 700;
         }
 
-        60% {
-            background-color: #c78989;
-            transform: scale(1.2);
-            -webkit-transform: scale(1.2);
+        .btn-path-reset {
+            min-width: 12.3em;
+            height: 5em;
+            font-size: 1em;
+            font-weight: 700;
         }
 
-        100% {
-            background-color: #eaa289;
-            border-radius: 0;
-            transform: scale(1);
-            -webkit-transform: scale(1);
+        .section-footer {
+            width: 100%;
+            height: 15%;
+            background-color: #6f6f6f;
         }
-    }
 
-    @keyframes animated-node-path {
-        0% {
-            background-color: #eaa289;
+        .modal-color-code {
+            position: relative;
+            margin: 2em 0;
+        }
+
+        .modal-color-code > label {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .modal-color-code > .node {
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: -.4em;
+        }
+
+        .btn-pfa {
+            background-image: linear-gradient(to top right, #2f2d41, #0d0d12);
+        }
+
+        .btn-pfa-inversed {
+            background-image: linear-gradient(to top left, #2f2d41, #0d0d12);
+        }
+
+        .pfa-container {
+            padding: 1em;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pfa-container > .row {
+            width: 80%;
+            height: 100%;
+        }
+
+        .pfa-container > .row > .col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        #pfa-info-btn {
+            color: #25234e !important;
+        }
+
+        #pfa-info-btn:hover {
+            color: #464e8b !important;
+        }
+
+        .pfa-info-icon {
             border-radius: 50%;
-            transform: scale(0);
-            -webkit-transform: scale(0);
+            font-size: 2.4em;
+            background: linear-gradient(to top right, #1e9adf, #a6c);
         }
 
-        60% {
-            background-color: #ff9b83;
-            transform: scale(1.2);
-            -webkit-transform: scale(1.2);
+        .pfa-info-icon:hover {
+            background: linear-gradient(to bottom right, #1a1a1a, #525252);
         }
 
-        100% {
-            background-color: #feff8e;
-            border-radius: 0;
-            transform: scale(1);
-            -webkit-transform: scale(1);
+        .btn-pfa-modal {
+            background-image: linear-gradient(to top right, #1e9adf, #a6c);
         }
-    }
 
-</style>
+        .disabled {
+            opacity: .5;
+            pointer-events: none;
+            cursor: default;
+        }
 
-<!--  -->
-
-<style>
-    .section-graph {
-        width: 100%;
-        height: 100%;
-        background: url("../../public/imgs/background/welcome_lights.jpg");
-        background-size: cover;
-    }
-
-    .commands-parameters {
-        margin-top: 1.5em;
-        text-align: center;
-    }
-
-    .commands-single-line {
-        /*display: ruby;*/
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: .5em;
-    }
-
-    .pfa-choose-algo {
-        border-radius: 50%;
-        font-size: 8em;
-        background: linear-gradient(to top right, #1e9adf, #a6c);
-    }
-
-    .pfa-choose-algo:hover {
-        background: linear-gradient(to bottom right, #1a1a1a, #525252);
-    }
-
-    .path-finding-launch {
-        height: 5em;
-        font-size: 1em;
-        font-weight: 700;
-    }
-
-    .btn-path-reset {
-        height: 5em;
-        font-size: 1em;
-        font-weight: 700;
-    }
-
-    .section-footer {
-        width: 100%;
-        height: 15%;
-        background-color: #6f6f6f;
-    }
-
-    .pfa-container {
-        padding: 1em;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .pfa-container > .row {
-        width: 80%;
-        height: 100%;
-    }
-
-    .pfa-container > .row > .col {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-    }
-
-</style>
+    </style>
 {% endblock %}
 
 {% block javascripts %}
-<script src="/js/graph.js"></script>
-<script src="/js/astar.js"></script>
-<script src="/js/djikstra.js"></script>
-<script src="/js/path_algo.js"></script>
+    <script src="/js/graph.js"></script>
+    <script src="/js/astar.js"></script>
+    <script src="/js/djikstra.js"></script>
+    <script src="/js/path_algo.js"></script>
 
-<script>
-    $(document).ready(function () {
-        AOS.init({
-            once: true
+    <script>
+        $(document).ready(function () {
+            AOS.init({
+                once: true
+            });
         });
-    });
-</script>
+    </script>
 {% endblock %}

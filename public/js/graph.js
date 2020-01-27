@@ -90,10 +90,6 @@ class Graph {
         return node;
     };
 
-    getNodes() {
-        return this.nodes;
-    }
-
     setupLinks = async () => {
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
@@ -129,17 +125,17 @@ class Graph {
         }
     };
 
-    debugLinks() {
+    resetGraphData = async() => {
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                console.log("NODE x,y = " + x + "," + y);
-                console.log("Linked to : top = " + (this.nodes[y][x].top) ? "true" : "false"
-                + " | bot = " + (this.nodes[y][x].bot) ? "true" : "false"
-                + " | left = " + (this.nodes[y][x].left) ? "true" : "false"
-                + " | right = " + (this.nodes[y][x].right) ? "true" : "false");
+                this.nodes[y][x].parent = null;
+                this.nodes[y][x].heuristic = 0;
+                this.nodes[y][x].fScore = 0;
+                this.nodes[y][x].cost = 0;
+                this.nodes[y][x].visited = false;
             }
         }
-    }
+    };
 }
 
 let getNeighbours = async (node) => {

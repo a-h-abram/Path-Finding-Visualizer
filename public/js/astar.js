@@ -3,10 +3,10 @@
  * @param graph
  * @param node
  * @param endNodes
- * @param uberNodes
+ * @param uberNode
  * @returns {Promise<void>}
  */
-let astar = async (graph, node, endNodes, uberNodes) => {
+let astar = async (graph, node, endNodes, uberNode) => {
     if (!node || endNodes.length < 0) {
         console.log("Start node and/or end nodes are missing");
         return;
@@ -17,9 +17,7 @@ let astar = async (graph, node, endNodes, uberNodes) => {
     let openList = []; // testing nodes
     let closedList = []; // saving path to the end
     let currentNode = null;
-    let searchUber = (uberNodes.length > 0);
-    let endNode = (searchUber) ? await getClosestUberNode(node, uberNodes)
-        : await getClosestEndNode(node, endNodes);
+    let endNode = (uberNode !== null) ? uberNode : await getClosestEndNode(node, endNodes);
 
     openList.push(node);
 
@@ -35,30 +33,9 @@ let astar = async (graph, node, endNodes, uberNodes) => {
         }
 
         if (currentNode.x === endNode.x && currentNode.y === endNode.y) {
+            console.log("A* has found a path");
 
-            if (searchUber) {
-                searchUber = (uberNodes.length > 0);
-
-                if (searchUber) {
-                    node = currentNode;
-                    closedList = [];
-                    //closedList.push(currentNode);
-                    openList = [];
-                    openList.push(currentNode);
-                }
-
-                endNode = (searchUber) ? await getClosestUberNode(node, uberNodes)
-                    : await getClosestEndNode(node, endNodes);
-
-
-
-                continue;
-            } else {
-
-                console.log("A* has found a path");
-
-                return displayFinalPath(await reconstructPath(currentNode));
-            }
+            return reconstructPath(currentNode);
         }
 
         closedList.push(currentNode);
@@ -69,7 +46,6 @@ let astar = async (graph, node, endNodes, uberNodes) => {
             if (closedList.includes(neighbour)) {
                 continue;
             }
-
 
             let nCost = currentNode.cost + 1; // +1 cause we work on a simple grid n+1
 
@@ -105,7 +81,7 @@ let getLowestNodeIndex = async (nodes) => {
 };
 
 /**
- * Return the distance between 2 nodes (vector2)
+ * Return the distance between 2 nodes
  * @param node1
  * @param node2
  * @returns {number}
@@ -119,8 +95,8 @@ let getDistance = (node1, node2) => {
 };
 
 /**
- * This method is a basic way using pythagore formula to get the closest end point
- * This is absolutly not accurate, especially in maze
+ * This method is a basic way to get the closest end point
+ * This is absolutely not accurate, especially in maze
  * @returns {Promise<void>}
  */
 let getClosestEndNode = async (startNode, endNodes) => {
@@ -145,8 +121,6 @@ let getClosestUberNode = async (startNode, uberNodes) => {
     let nodeIndex;
 
     for (let i = 0; i < uberNodes.length; i++) {
-        console.log(uberNodes[i].x + " " + uberNodes[i].y);
-
         let distance = getDistance(uberNodes[i], startNode);
 
         if (distance < minDistance) {
@@ -182,7 +156,7 @@ let reconstructPath = async (node) => {
     let path = [];
     let lastNode = node;
 
-    while (lastNode) {
+    while (lastNode !== null) {
         path.push(lastNode);
         lastNode = lastNode.parent;
     }
@@ -195,6 +169,5 @@ let displayFinalPath = async (path) => {
         if (path[i].state !== nodeState.Wall) {
             await showFinalPathNode(path[i]);
         }
-
     }
 };

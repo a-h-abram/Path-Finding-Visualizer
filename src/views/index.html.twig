@@ -31,9 +31,6 @@
 
         <div class="collapse navbar-collapse" id="navbar-commands">
             <ul class="navbar-nav mr-auto">
-                <!--<li class="nav-item">
-                    <button class="nav-link btn btn-outline-success" onclick="updateArrayValues()">Générer un nouveau tableau</button>
-                </li>-->
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navChooseAlgo" data-toggle="dropdown">
@@ -68,14 +65,14 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="generateMaze()">Generate Auto Maze</a>
+                    <a class="nav-link" href="#" onclick="generateMaze()">Generate Maze</a>
                 </li>
 
-                <!--<li id="sort-8" class="nav-item">
-                    <a class="nav-link" href="#" onclick="changeSortType(8)">Radix Sort</a>
-                </li>-->
-
             </ul>
+
+            <a type="button" id="pfa-info-btn" data-toggle="modal" data-target="#pfa-modal-info">
+                <i class="fa fa-info-circle pfa-info-icon"></i>
+            </a>
         </div>
     </nav>
 </header>
@@ -85,67 +82,13 @@
 
 {% block javascripts %}
 <script type="application/javascript">
-    AOS.init();
+
 </script>
 {% endblock %}
 
 {% block stylesheets %}
 <style>
-    .navbar {
-        background: linear-gradient(270deg, #975c9f, #e76e74) !important;
-        background-size: 400% 400%;
-        -webkit-animation: Background-Animated 4s ease infinite;
-        -moz-animation: Background-Animated 4s ease infinite;
-        animation: Background-Animated 44s ease infinite;
-    }
 
-    body {
-        background: linear-gradient(270deg, #494e67, #eaa289) !important;
-        background-size: 400% 400%;
-        -webkit-animation: Background-Animated 4s ease infinite;
-        -moz-animation: Background-Animated 4s ease infinite;
-        animation: Background-Animated 44s ease infinite;
-    }
-
-    @-webkit-keyframes Background-Animated {
-        0% {
-            background-position:0% 50%;
-        }
-
-        50% {
-            background-position:100% 50%
-        }
-
-        100% {
-            background-position:0% 50%
-        }
-    }
-    @-moz-keyframes Background-Animated {
-        0% {
-            background-position: 0 50%;
-        }
-
-        50% {
-            background-position:100% 50%
-        }
-
-        100% {
-            background-position: 0 50%
-        }
-    }
-    @keyframes Background-Animated {
-        0% {
-            background-position: 0 50%;
-        }
-
-        50% {
-            background-position: 100% 50%
-        }
-
-        100% {
-            background-position: 0 50%
-        }
-    }
 </style>
 {% endblock %}
 </html>
